@@ -1,0 +1,19 @@
+# Create the namespace
+kubectl create namespace ingress-nginx
+
+# Add the official ingress-nginx chart repo and update
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+
+# Install the controller. For GKE, a LoadBalancer Service is fine for public access.
+helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
+  --namespace ingress-nginx \
+  --create-namespace \
+  --set controller.service.type=LoadBalancer
+
+
+
+
+kubectl get pods -n ingress-nginx
+kubectl get svc  -n ingress-nginx
+# Expect an EXTERNAL-IP on the service named: ingress-nginx-controller
